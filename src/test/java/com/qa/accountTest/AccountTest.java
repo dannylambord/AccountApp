@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.qa.app.Account;
+import com.qa.app.AccountRepositoryDB;
 import com.qa.app.AccountRepositoryMap;
 
 
@@ -57,17 +58,45 @@ public class AccountTest {
 	public void accountRepositoryMapTest()
 	{
 		Account account = new Account();
-		AccountRepositoryMap arm = new AccountRepositoryMap();
-		int id = 2;
-		account.setID(id);
-		account.setFName("Danny");
+		AccountRepositoryDB arm = new AccountRepositoryDB();
+		//account.setFName("Danny");
 		arm.add(account);
-		Account retrieved = arm.retrieve(2);
-		assertEquals("Wrong account retrieved", "Danny", retrieved.getFName());
+		int id = account.getID();
+		Account retrieved = arm.retrieve(id);
 		assertSame("Wrong account", account, retrieved); //checks that account and retrieved are the same 
 		
 		
 	}
 	
+	@Test
+	public void DBupdate()
+	{
+		Account account = new Account();
+		AccountRepositoryDB db = new AccountRepositoryDB();
+		account.setFName("Adrian");
+		db.add(account);
+		int id = account.getID();
+		db.updateFName(id, "Danny");
+		String fName = account.getFName();
+		assertEquals("Wrong name returned", "Danny", fName);
+	}
+	
+	
+	@Test
+	public void DBdelete()
+	{
+		boolean x = false;
+		Account account = new Account();
+		AccountRepositoryDB db = new AccountRepositoryDB();
+		db.add(account);
+		int id = account.getID();
+		db.retrieve(account.getID());
+		db.remove(id);
+		if (db.retrieve(id) == null)
+		{
+			x = true;
+		}
+		assertEquals("Wrong name returned", true, x);
+	}
 
 }
