@@ -10,6 +10,4 @@ public interface AccountRepository {
 	
 	public void remove(int id);
 
-
-
 }
