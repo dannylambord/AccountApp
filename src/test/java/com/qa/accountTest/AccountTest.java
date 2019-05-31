@@ -2,12 +2,15 @@ package com.qa.accountTest;
 
 import static org.junit.Assert.*;
 
+import javax.swing.text.TabableView;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.qa.app.Account;
 import com.qa.app.AccountRepositoryDB;
 import com.qa.app.AccountRepositoryMap;
+import com.qa.app.Task;
 
 
 
@@ -59,13 +62,10 @@ public class AccountTest {
 	{
 		Account account = new Account();
 		AccountRepositoryDB arm = new AccountRepositoryDB();
-		//account.setFName("Danny");
 		arm.add(account);
 		int id = account.getID();
 		Account retrieved = arm.retrieve(id);
-		assertSame("Wrong account", account, retrieved); //checks that account and retrieved are the same 
-		
-		
+		assertSame("Wrong account", account, retrieved); 
 	}
 	
 	@Test
@@ -97,6 +97,30 @@ public class AccountTest {
 			x = true;
 		}
 		assertEquals("Wrong name returned", true, x);
+	}
+	
+	@Test
+	public void tasksAdd()
+	{
+		AccountRepositoryDB arDB = new AccountRepositoryDB();
+		Account a = new Account();
+		a.setFName("Hugo");
+		Task t = new Task();
+		t.setToDo("Dance");
+		Task t2 = new Task();
+		t2.setToDo("Dog");
+		a.getTasks().add(t);
+		a.getTasks().add(t2);
+		arDB.createWithTasks(a);
+	
+	}
+	
+	@Test
+	public void name()
+	{
+		AccountRepositoryDB arDB = new AccountRepositoryDB();
+		//Account a = new Account();
+		arDB.retrieveByName("Danny");
 	}
 
 }
